@@ -1,19 +1,18 @@
-import express from "express";
+import express, { Request, Response } from "express";
+import { VercelRequest, VercelResponse } from "@vercel/node";
 
 const app = express();
 app.use(express.json());
 
-app.post("/webhook", (req, res) => {
-  console.log("Received payload:", req.body);
+app.post("/webhook", (req: Request, res: Response) => {
+    console.log("Received payload:", req.body);
 
-  // Extract and store secret code from payload
-  if (req.body.secret) {
-      console.log("Secret Code:", req.body.secret);
-  }
-  res.status(200).send("Webhook received!");
+    if (req.body.secret) {
+        console.log("Secret Code:", req.body.secret);
+    }
+
+    res.status(200).json({ message: "Webhook received!" });
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// Export the handler for Vercel
+export default (req: VercelRequest, res: VercelResponse) => app(req, res);
