@@ -8,9 +8,9 @@ app.post("/webhook", (req: Request, res: Response) => {
   console.log(JSON.stringify(req.body, null, 2));
 
   // Extract and store the secret code if it exists
-  const secretCode = req.body?.data?.secret_code || req.body?.secret;
-  if (secretCode) {
-    console.log("🔑 Secret Code:", secretCode);
+  const payload = req.body;
+  if (payload) {
+    console.log("🔑 Secret Code:", payload);
   }
 
   res.status(200).send("Webhook received!");
